@@ -1,9 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from "react-redux";
+import dayjs from 'dayjs';
+import weekOfYear from "dayjs/plugin/weekOfYear";
 import store from "../src/app/store"
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+dayjs.extend(weekOfYear);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

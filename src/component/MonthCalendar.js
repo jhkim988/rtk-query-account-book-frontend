@@ -1,8 +1,9 @@
 import dayjs from "dayjs";
-import weekOfYear from "dayjs/plugin/weekOfYear";
-import { selectFinanceForDate, selectFinanceForWeek, useGetFinanceDetail, useGetFinanceForMonthQuery } from "../features/finance/financeSlice";
-
-dayjs.extend(weekOfYear);
+import {
+  selectFinanceForDate,
+  selectFinanceForWeek,
+  useGetFinanceForMonthQuery,
+} from "../features/finance/financeSlice";
 
 export const MonthCalendar = (props) => {
   const date = dayjs(props.date);
@@ -31,17 +32,31 @@ export const Week = (props) => {
     .fill()
     .map((_, d) => date.week(numWeek).day(d))
     .map((weekDate) => <Day key={`day#${weekDate}`} date={weekDate} />);
-  const { financeForWeek } = useGetFinanceForMonthQuery({ date: date.format("YYYYMM") }, {
-    selectFromResult: result => ({
-      ...result,
-      financeForWeek: selectFinanceForWeek(result, numWeek)
-    }),
-  });
-  const weekExpense = financeForWeek.map(x => x.expense).reduce((a, b) => a + b, 0);
-  const weekIncome = financeForWeek.map(x => x.income).reduce((a, b) => a + b, 0);
+
+  const { financeForWeek } = useGetFinanceForMonthQuery(
+    { date: date.format("YYYYMM") },
+    {
+      selectFromResult: (result) => ({
+        ...result,
+        financeForWeek: selectFinanceForWeek(result, numWeek),
+      }),
+    }
+  );
+
+  const weekExpense = financeForWeek
+    .map((x) => x.expense)
+    .reduce((a, b) => a + b, 0);
+
+  const weekIncome = financeForWeek
+    .map((x) => x.income)
+    .reduce((a, b) => a + b, 0);
+
   return (
     <div>
-      <div>{weekExpense !== 0 && `-${weekExpense}`} {weekIncome !== 0 && `+${weekIncome}`}</div>
+      <div>
+        {weekExpense !== 0 && `-${weekExpense}`}
+        {weekIncome !== 0 && `+${weekIncome}`}
+      </div>
       {dayChild}
     </div>
   );
@@ -49,12 +64,17 @@ export const Week = (props) => {
 
 export const Day = (props) => {
   const { date } = props;
-  const { financeForDate: { expense, income }} = useGetFinanceForMonthQuery({ date: date.format("YYYYMM") }, {
-    selectFromResult: result => ({
-      ...result,
-      financeForDate: selectFinanceForDate(result, date),
-    })
-  });
+  const {
+    financeForDate: { expense, income },
+  } = useGetFinanceForMonthQuery(
+    { date: date.format("YYYYMM") },
+    {
+      selectFromResult: (result) => ({
+        ...result,
+        financeForDate: selectFinanceForDate(result, date),
+      }),
+    }
+  );
 
   return (
     <span>
