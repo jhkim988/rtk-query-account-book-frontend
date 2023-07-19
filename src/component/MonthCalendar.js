@@ -20,7 +20,7 @@ export const MonthCalendar = (props) => {
 
   return (
     <div>
-      <h1>{date.month()}</h1>
+      <h1>{date.month()+1}</h1>
       {weekChild}
     </div>
   );
