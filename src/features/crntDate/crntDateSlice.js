@@ -3,13 +3,15 @@ import dayjs from "dayjs";
 
 export const crntDateSlice = createSlice({
   name: "crntDate",
-  initialState: dayjs(),
+  initialState: {
+    value: dayjs().format("YYYY-MM-DD"),
+  },
   reducers: {
     setDate(state, action) {
-      state = action.payload;
+      state.value = action.payload;
     },
   },
 });
 
 export const { setDate } = crntDateSlice.actions;
-export default crntDateSlice.reducers;
+export default crntDateSlice.reducer;

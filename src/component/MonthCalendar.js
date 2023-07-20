@@ -4,6 +4,8 @@ import {
   selectFinanceForWeek,
   useGetFinanceForMonthQuery,
 } from "../features/finance/financeSlice";
+import { useDispatch } from "react-redux";
+import { setDate } from "../features/crntDate/crntDateSlice";
 
 export const MonthCalendar = (props) => {
   const date = dayjs(props.date);
@@ -20,7 +22,7 @@ export const MonthCalendar = (props) => {
 
   return (
     <div>
-      <h1>{date.month()+1}</h1>
+      <h1>{date.month() + 1}</h1>
       {weekChild}
     </div>
   );
@@ -64,6 +66,8 @@ export const Week = (props) => {
 
 export const Day = (props) => {
   const { date } = props;
+  const dispatch = useDispatch();
+
   const {
     financeForDate: { expense, income },
   } = useGetFinanceForMonthQuery(
@@ -76,6 +80,9 @@ export const Day = (props) => {
     }
   );
 
+  const handleClick = () => {
+    dispatch(setDate(date.format("YYYY-MM-DD")));
+  };
   return (
     <span>
       <div
@@ -84,6 +91,7 @@ export const Day = (props) => {
           width: 100,
           display: "inline-block",
         }}
+        onClick={handleClick}
       >
         <div>{date.date()}</div>
         <div>지출: -{expense}</div>
