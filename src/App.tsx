@@ -1,5 +1,5 @@
 import { MonthCalendar } from "./component/MonthCalendar";
-import { DayFinanceList } from './component/DayFinanceList';
+import { DayFinanceList } from "./component/DayFinanceList";
 
 function App() {
   return (
